@@ -1,0 +1,12 @@
+{
+  "name": "desafio2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Desafio2.js",
+  "scripts": {
+    "start": "node ./Desafio2.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
