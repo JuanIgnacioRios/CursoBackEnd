@@ -45,7 +45,7 @@ class ProductManager {
     }
 
     async getProducts() {
-        let productsInFile = "";
+        let productsInFile = [];
         try {
             const fileContent = await fs.readFile(this.path, "utf8");
             productsInFile = JSON.parse(fileContent);
@@ -106,38 +106,4 @@ class ProductManager {
     }
 }
 
-
-async function TestingProcess() {
-    // Se creará una instancia de la clase “ProductManager”
-    const ProductsManager = new ProductManager("./Products.json");
-
-    console.log("-----Llamamos a getProducts----- \n", await ProductsManager.getProducts());
-  
-    console.log("-----Agregamos un Producto-----")
-    await ProductsManager.addProduct({
-      title: "producto prueba",
-      description: "Este es un producto prueba",
-      price: 200,
-      thumbnail: "Sin imagen",
-      code: "abc123uhrjkwhsdkdssdfdfdWdsj",
-      stock: 25,
-    });
-  
-    console.log("-----Llamamos a getProducts----- \n", await ProductsManager.getProducts());
-    console.log("-----Buscamos un producto por ID----- \n", await ProductsManager.getProductById(1));
-  
-    console.log("-----Actualizamos un producto-----")
-    await ProductsManager.updateProduct(1, {
-      price: 600,
-      stock: 2,
-    });
-  
-    console.log("-----Llamamos a getProducts para ver las actualizaciones----- \n", await ProductsManager.getProducts());
-  
-    console.log("-----Eliminamos un producto-----")
-    await ProductsManager.deleteProduct(1);
-
-    console.log("-----Llamamos a getProducts para ver si se elimino el producto----- \n", await ProductsManager.getProducts());
-}
-  
-TestingProcess()
+module.exports = { ProductManager };
