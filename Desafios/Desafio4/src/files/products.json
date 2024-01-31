@@ -1,0 +1,35 @@
+[
+  {
+    "id": "bf46baf3-1b22-496f-8065-fd0f1cbd0ba4",
+    "title": "producto prueba 12",
+    "description": "Este es un producto prueba",
+    "code": "abc132",
+    "price": 200,
+    "status": "true",
+    "stock": 25,
+    "category": "remera",
+    "thumbnails": []
+  },
+  {
+    "id": "6446dc34-1044-4b11-b464-63939d5fb4ac",
+    "title": "producto prueba 12",
+    "description": "Este es un producto prueba",
+    "code": "abc132",
+    "price": 200,
+    "status": "true",
+    "stock": 25,
+    "category": "remera",
+    "thumbnails": []
+  },
+  {
+    "id": "86591c26-843e-475a-a72e-f71bec48efd8",
+    "title": "Remera",
+    "description": "Remera",
+    "code": "R23",
+    "price": "500",
+    "status": "true",
+    "stock": "100",
+    "category": "Remera",
+    "thumbnails": []
+  }
+]
