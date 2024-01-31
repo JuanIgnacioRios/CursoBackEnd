@@ -1,27 +1,5 @@
 [
   {
-    "id": "bf46baf3-1b22-496f-8065-fd0f1cbd0ba4",
-    "title": "producto prueba 12",
-    "description": "Este es un producto prueba",
-    "code": "abc132",
-    "price": 200,
-    "status": "true",
-    "stock": 25,
-    "category": "remera",
-    "thumbnails": []
-  },
-  {
-    "id": "6446dc34-1044-4b11-b464-63939d5fb4ac",
-    "title": "producto prueba 12",
-    "description": "Este es un producto prueba",
-    "code": "abc132",
-    "price": 200,
-    "status": "true",
-    "stock": 25,
-    "category": "remera",
-    "thumbnails": []
-  },
-  {
     "id": "86591c26-843e-475a-a72e-f71bec48efd8",
     "title": "Remera",
     "description": "Remera",
@@ -30,6 +8,28 @@
     "status": "true",
     "stock": "100",
     "category": "Remera",
+    "thumbnails": []
+  },
+  {
+    "id": "027c373d-7e9e-420d-931d-2e59ad1c2335",
+    "title": "Pantalon",
+    "description": "Pantalon de Jean",
+    "code": "PJ9831",
+    "price": "20342",
+    "status": "true",
+    "stock": "23",
+    "category": "Pantalones",
+    "thumbnails": []
+  },
+  {
+    "id": "2fadb0c6-75a0-43e4-9811-e78d0e536ef3",
+    "title": "Campera",
+    "description": "Campera de Jean",
+    "code": "CJ2835",
+    "price": "3000",
+    "status": "true",
+    "stock": "123",
+    "category": "Camperas",
     "thumbnails": []
   }
 ]

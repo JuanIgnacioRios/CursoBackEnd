@@ -75,10 +75,9 @@ socketServer.on("connection" , async (socket) => {
 
     socket.on("delete-product", async(id) => {
         try {
-            const pid = parseInt(id)
-            await p.deleteProduct(pid)
-            const updatedListProd = await p.getProducts()
-            socketServer.emit("products", updatedListProd)
+            await p.deleteProduct(id)
+            const Products = await p.getProducts()
+            socketServer.emit("products", Products)
             socketServer.emit('response', { status: 'success' , message: "producto eliminado correctamente"});
         } catch (error) {
             socketServer.emit('response', { status: 'error', message: error.message });
