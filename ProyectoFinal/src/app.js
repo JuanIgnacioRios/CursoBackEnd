@@ -9,6 +9,7 @@ const PORT = 8080;
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
+
 //Routes
 app.use('/api/products', productsRouter)
 app.use('/api/cart', cartsRouter)
