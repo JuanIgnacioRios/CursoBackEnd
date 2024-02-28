@@ -1,32 +1,25 @@
-import fs from"fs/promises";
-import { v4 as uuidv4 } from 'uuid';
+import productsModel from '../dao/models/products.model.js'
 
 class ProductManager {
-    constructor(path) {
-        this.path = path;
+    constructor() {
     }
 
     async addProduct({title, description, code, price, status, stock, category, thumbnails}) {
-        let products = []
         try{
-            const productsInFile = await fs.readFile(this.path, "utf8");
-            products = JSON.parse(productsInFile);
             if(title && description && code && price && stock && category){
                 let thumbnailsArray = thumbnails ? [thumbnails] : [];  
                 const newProduct = {
-                    id: uuidv4(),
                     title,
                     description,
                     code,
                     price,
-                    status: status || "true",
+                    status: status || true,
                     stock,
                     category,
                     thumbnails: thumbnailsArray
                 };
-                products.push(newProduct);
-                await fs.writeFile(this.path, JSON.stringify(products, null, 2))
-                return {status: "success", message: "Producto Agregado Correctamente"}
+                let result = await productsModel.create(newProduct)
+                return {status: "success", payload: result}
             }else{
                 return { status: "error", error: "El Producto a agregar no cuenta con todos los campos, por favor vuelva a intenar"}
             }
@@ -36,32 +29,25 @@ class ProductManager {
         }
     }
 
-    async getProducts(limit){ 
-        let products = []
+    async getProducts(limit, page, sort, query){
         try{
-            const productsInFile = await fs.readFile(this.path, "utf8");
-            products = JSON.parse(productsInFile);
-            if (limit) {
-                return { status: "success", products: products.splice(0, limit) }
-            } else {
-                return { status: "success", products: products }
-            }
+            const options = { limit, page, lean: true };
+            if (sort) options.sort = sort;
+            console.log(query)
+            const products = await productsModel.paginate(query, options);
+            return { status: "success", payload: products };
         }catch(error){
             return {status: "error", error: error}
         }
-        return products
     }
 
     async getProductById(id) {
         try {
-            const productsInFile = await fs.readFile(this.path, "utf8");
-            const products = JSON.parse(productsInFile);
-            const productIndex = products.findIndex(p => p.id === id);
-    
-            if (productIndex === -1) {
-                return { status: "error", error: "No existe poducto con ese ID" }
+            const product = await productsModel.find({ _id: id});
+            if (product) {
+                return { status: "success", payload: product }
             } else {
-               return { status: "success", product: products[productIndex] }
+                return { status: "error", error: "No existe producto con ese ID" }
             }
         } catch (error) {
             return { status: "error", error: error }
@@ -71,38 +57,17 @@ class ProductManager {
 
     async updateProduct(id, propertiesToUpdate) {
         try {
-            const productsInFile = await fs.readFile(this.path, "utf8");
-            let products = JSON.parse(productsInFile);
-    
-            let productToUpdate = products.find(p => p.id === id);
-            const productToUpdateIndex = products.indexOf(productToUpdate);
-    
-            for (let property in propertiesToUpdate) {
-                if (productToUpdate.hasOwnProperty(property)) {
-                    products[productToUpdateIndex][property] = propertiesToUpdate[property];
-                }
-            }
-    
-            await fs.writeFile(this.path, JSON.stringify(products, null, 2));
-    
-            return { status: "success", message: "Producto Actualizado Correctamente" }
+            let result = await productsModel.updateOne({_id: id}, propertiesToUpdate)
+            return { status: "success", payload: result }
         } catch (error) {
             return { status: "error", error: error }
         }
     }
 
     async deleteProduct(id) {
-        let products = [];
         try {
-            const productsInFile = await fs.readFile(this.path, "utf8");
-            products = JSON.parse(productsInFile);
-
-            let productIndex = products.findIndex(p => p.id === id);
-
-            products.splice(productIndex, 1);
-            await fs.writeFile(this.path, JSON.stringify(products, null, 2))
-
-            return { status: "success", message: "Producto Eliminado Correctamente" }
+            let result = await productsModel.deleteOne({_id:  id})
+            return { status: "success", payload: result }
 
         } catch (error) {
             return { status: "error", error: error }

@@ -1,15 +1,17 @@
 import express from 'express';
 import ProductManager from '../services/ProductManager.js';
 
-const ProductsManager = new ProductManager("./src/files/products.json");
+const ProductsManager = new ProductManager();
 const router = express.Router();
 
 //Endpoints
 
 router.get('/', async (req, res) => {
-    let { limit } = req.query;
-    let result = await ProductsManager.getProducts(limit)
-    res.send(result)    
+    let { limit = 10, page = 1, sort, query } = req.query;
+        limit = parseInt(limit);
+        page = parseInt(page);
+        const result = await ProductsManager.getProducts(limit, page, sort, {query});
+        res.send(result);
 })
 
 router.get('/:pid', async (req, res) => {
