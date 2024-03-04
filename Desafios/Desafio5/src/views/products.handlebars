@@ -1,0 +1,16 @@
+<h1>¡Bienvenido {{first_name}}!</h1>
+<form action="/api/sessions/logout" method="GET">
+    <button type="submit">Log Out</button>
+</form>
+{{#if isAdmin}}
+    <h3>Usuario Admin</h3>
+{{/if}}
+{{#each Products}}
+<form action="http://localhost:8080/api/cart/65d9b62a44d9c92f92ecc5f7/product/{{_id}}" method="POST">
+    <h1>{{title}}</h1>
+    <h2>${{price}},00</h2>
+    <h3>Stock: {{stock}}</h3>
+    <h3>{{category}}</h3>
+    <button type="submit">Agregar Al Carrito</button>
+</form>
+{{/each}}
