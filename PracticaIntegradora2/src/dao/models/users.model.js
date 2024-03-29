@@ -11,10 +11,14 @@ const usersSchema = new mongoose.Schema({
     },
     age: Number,
     password: String,
-    isAdmin:{
-        type: Boolean,
-        default: false
-    } 
+    role: {
+        type: String,
+        default: 'user'
+    },
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "carts"
+    }
 })
 
 const usersModel = mongoose.model(usersCollection, usersSchema)
