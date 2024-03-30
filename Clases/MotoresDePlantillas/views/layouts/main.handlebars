@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Saludos {{usuario.nombre}}</h1>
+
+
+    {{#if isAdmin}}
+    {{#each food}}
+
+    <div>
+        <p>{{this.nombre}}</p>
+        <p>{{this.precio}}</p>
+    </div>
+    {{/each}}
+
+    {{else}}
+    <p>no es admin</p>
+    {{/if}}
+
+</body>
+</html>
