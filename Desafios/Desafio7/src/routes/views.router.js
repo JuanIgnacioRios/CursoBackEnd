@@ -1,5 +1,6 @@
 import express from 'express'
-import viewsController from '../controllers/views.controller';
+import {authToken} from '../../utils.js'
+import viewsController from '../controllers/views.controller.js';
 
 const router = express.Router();
 

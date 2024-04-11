@@ -5,10 +5,9 @@ const ProductsManager = new ProductManager();
 const CartsManager = new CartManager();
 
 async function renderProducts(req, res) {
-    if (!req.session.user) {
+    if(!req.session.user){
         return res.redirect('/login')
     }
-
     let { limit, page, sort, query } = req.query;
     if (!limit) limit = 10;
     if (!page) page = 1;

@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import passport from 'passport'
+import jwt from 'jsonwebtoken'
 
 export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 export const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password)
@@ -21,4 +22,18 @@ export const authorization = (role) => {
         if (req.user.role != role) return res.status(403).send({ error: "No permissions" })
         next()
     }
+}
+export const authToken = (req,res,next) =>{
+    const authHeader = req.headers.authorization
+    if(!authHeader)return res.status(401).send({
+        error: "Not authenticated"
+    })
+    const token = authHeader.split(' ')
+    jwt.verify(token, 'JsonWebTokenSecret', (error, credentials)=>{
+        if(error)return res.status(403).send({
+            error: "Not authorized"
+        })
+        req.user = credentials.user;
+        next()
+    })
 }
