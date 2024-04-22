@@ -1,38 +1,40 @@
 import express from 'express';
 import usersModel from '../dao/models/users.model.js'
-
+import {createHash, isValidPassword} from '../../utils.js'
+import passport from 'passport';
 const router = express.Router();
 
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const user = await usersModel.findOne({ email: email });
-        if (!user) {
-            return res.send('El usuario ingresado no existe');
-        }
-        if (user.password === password) {
-            req.session.user = user;
-            req.session.admin = true;
-            res.redirect("/products");
-        } else {
-            res.send('Contraseña Incorrecta');
-        }
-    } catch (error) {
-        console.error("Error al intentar iniciar sesión:", error);
-        res.status(500).send("Error interno del servidor");
+router.post('/login',passport.authenticate('login', {failureRedirect:'/faillogin'}), async (req, res) => {
+    if(!req.user) return res.status(400).send({status: "error", error: "Invalid credentials "})
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email
     }
+    res.send({status: "success", payload: req.user})
+    res.redirect("/products")
 });
 
+router.get('/faillogin', async(req, res) =>{
+    res.send({error: "failed login"})    
+})
 
 
-router.post('/register', async (req, res) => {
-    try{
-        const { first_name, last_name, email, age, password, role } = req.body;
-        let result = await usersModel.create({first_name, last_name, email, age, password, role})
-        res.send({status: "Success", message: "Usuario creado con exito", payload: result})
-    }catch(error){
-        res.send({status: "error", error: error})
-    }
+router.post('/register',passport.authenticate('register',{failureRedirect:'/failregister'}), async (req, res) => {
+    res.send({status: "success", message: "Usuario registrado"})
+    res.redirect('/login')
+})
+
+router.get('/failregister', async(req, res) =>{
+    res.send({error: "failed register"})    
+})
+
+router.get('/github', passport.authenticate('github', {scope: ['user:email']}), async(req,res) =>{ })
+
+router.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/login'}), async (req, res) =>{
+    req.session.user = req.user
+    res.send('Ingresaste con github')
 })
 
 

@@ -1,4 +1,8 @@
-import productsModel from '../dao/models/products.model.js'
+import productsDAO from '../dao/products.mongo.js'
+import ProductDTO from '../dao/dtos/product.dto.js';
+
+const productsModel = new productsDAO()
+
 
 class ProductManager {
     constructor() {
@@ -7,17 +11,7 @@ class ProductManager {
     async addProduct({title, description, code, price, status, stock, category, thumbnails}) {
         try{
             if(title && description && code && price && stock && category){
-                let thumbnailsArray = thumbnails ? [thumbnails] : [];  
-                const newProduct = {
-                    title,
-                    description,
-                    code,
-                    price,
-                    status: status || true,
-                    stock,
-                    category,
-                    thumbnails: thumbnailsArray
-                };
+                let newProduct = new ProductDTO({title, description, code, price, status, stock, category, thumbnails})
                 let result = await productsModel.create(newProduct)
                 return {status: "success", payload: result}
             }else{
@@ -35,9 +29,8 @@ class ProductManager {
             if (sort) options.sort = sort;
             
             const filter = query ? JSON.parse(query) : {};
-            console.log(filter)
 
-            const products = await productsModel.paginate(filter, options);
+            const products = await productsModel.get(filter, options);
             return { status: "success", payload: products };
         } catch(error) {
             return { status: "error", error: error }
@@ -48,7 +41,8 @@ class ProductManager {
     async getProductById(id) {
         try {
             const product = await productsModel.find({ _id: id});
-            if (product) {
+            console.log(product)
+            if (product.length > 0) {
                 return { status: "success", payload: product }
             } else {
                 return { status: "error", error: "No existe producto con ese ID" }
@@ -61,7 +55,7 @@ class ProductManager {
 
     async updateProduct(id, propertiesToUpdate) {
         try {
-            let result = await productsModel.updateOne({_id: id}, propertiesToUpdate)
+            let result = await productsModel.update({_id: id}, propertiesToUpdate)
             return { status: "success", payload: result }
         } catch (error) {
             return { status: "error", error: error }
@@ -70,7 +64,7 @@ class ProductManager {
 
     async deleteProduct(id) {
         try {
-            let result = await productsModel.deleteOne({_id:  id})
+            let result = await productsModel.delete({_id:  id})
             return { status: "success", payload: result }
 
         } catch (error) {
