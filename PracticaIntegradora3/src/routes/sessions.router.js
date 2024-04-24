@@ -11,7 +11,7 @@ router.post('/register', passport.authenticate('register', { failureRedirect: '/
 router.get('/failregister', sessionsController.failregister)
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }))
 router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), sessionsController.githubCallBack)
-router.get('/current', passportCall('jwt'), authorization('user'), sessionsController.current)
+router.get('/current', passportCall('jwt', { session: false }), authorization('user'), sessionsController.current)
 router.get('/logout', sessionsController.logout)
 
 

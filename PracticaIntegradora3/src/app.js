@@ -31,19 +31,19 @@ app.use(express.static(__dirname + '/public'));
 app.use(cookieParser());
 initializePassport()
 app.use(passport.initialize())
-    app.use(session({
-        store: MongoStore.create({
-            mongoUrl: "mongodb+srv://JuanRios:1234562024@cluster0.qk3spmw.mongodb.net/sessiones?retryWrites=true&w=majority",
-            mongoOptions: {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            },
-            ttl: 15
-        }),
-        secret: "1234562024",
-        resave: false,
-        saveUninitialized: false
-    }))
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://JuanRios:1234562024@cluster0.qk3spmw.mongodb.net/sessiones?retryWrites=true&w=majority",
+        mongoOptions: {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        },
+        ttl: 15
+    }),
+    secret: "1234562024",
+    resave: false,
+    saveUninitialized: false
+}))
 
 // Configuración HandleBars
 app.engine("handlebars", handlebars.engine());

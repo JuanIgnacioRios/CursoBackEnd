@@ -2,7 +2,7 @@ import passport from 'passport';
 import { passportCall, authorization } from '../../utils.js'
 import jwt from 'jsonwebtoken';
 
-async function login(req,res){
+async function login(req, res) {
     if (!req.user) return res.status(400).send({ status: "error", error: "Invalid credentials " })
     req.session.user = {
         first_name: req.user.first_name,
@@ -18,28 +18,28 @@ async function login(req,res){
     res.redirect("/products")
 }
 
-async function faillogin(req, res){
+async function faillogin(req, res) {
     res.send({ error: "failed login" })
 }
 
-async function register(req,res){
+async function register(req, res) {
     res.redirect('/login')
 }
 
-async function failregister(req, res){
+async function failregister(req, res) {
     res.send({ error: "failed register" })
 }
 
-async function githubCallBack(req, res){
+async function githubCallBack(req, res) {
     req.session.user = req.user
     res.redirect("/products")
 }
 
-async function current(req, res){
+async function current(req, res) {
     res.send(req.user);
 }
 
-async function logout(req, res){
+async function logout(req, res) {
     req.session.destroy();
     res.redirect('/login')
 }
