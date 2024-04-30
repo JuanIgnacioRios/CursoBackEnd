@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/:cid', cartController.getCartById)
 router.post('/', cartController.createCart)
 router.post('/:cid/product/:pid', cartController.addProductToCart)
-router.post('/:cid/purchase', passportCall('jwt', { session: false }), cartController.purchase)
+router.get('/:cid/purchase', cartController.purchase)
 router.put('/:cid', cartController.updateCartProducts)
 router.put('/:cid/products/:pid', cartController.updateProductsQuantity)
 router.delete('/:cid/product/:pid', cartController.deleteProductFromCart)

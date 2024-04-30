@@ -3,7 +3,7 @@ import { passportCall, authorization } from '../../utils.js'
 import jwt from 'jsonwebtoken';
 
 async function login(req, res) {
-    if (!req.user) return res.status(400).send({ status: "error", error: "Invalid credentials " })
+    if (!req.user) return res.status(400).send({ status: "error", error: "Invalid credentials" })
     req.session.user = {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
@@ -15,6 +15,7 @@ async function login(req, res) {
     const role = req.user.role;
     let token = jwt.sign({ email, password, role }, 'JsonWebTokenSecret', { expiresIn: '24h' })
     res.cookie('cookieToken', token, { maxAge: 60 * 60 * 1000, httpOnly: true })
+
     res.redirect("/products")
 }
 
@@ -36,7 +37,7 @@ async function githubCallBack(req, res) {
 }
 
 async function current(req, res) {
-    res.send(req.user);
+    res.send({ email: req.user.email, role: req.user.role });
 }
 
 async function logout(req, res) {

@@ -25,25 +25,33 @@ async function addProductToCart(req, res) {
 }
 
 async function purchase(req, res) {
-    console.log(req.user)
     const cartId = req.params.cid;
     const cart = await CartsManager.getCartById(cartId)
-
-    let productsInCart = cart[0].products
+    console.log(req.user)
+    let productsInCart = cart.payload[0].products
     let amount = 0;
+    console.log(productsInCart)
     for (let index = 0; index < productsInCart.length; index++) {
         let product = await ProductsManager.getProductById(productsInCart[index].productId)
-        let newStock = product.stock - productsInCart[index].quantity
+        console.log(product)
+        let newStock = product.payload[0].stock - productsInCart[index].quantity
+        console.log("title", product.payload[0].title)
         if (newStock >= 0) {
-            amount += product.price * productsInCart[index].quantity
+            amount += product.payload[0].price * productsInCart[index].quantity
             await ProductsManager.updateProduct(productsInCart[index].productId, { "stock": newStock })
-            await ProductsManager.deleteProductFromCart(cartId, productsInCart[index].productId)
+            await CartsManager.deleteProductFromCart(cartId, productsInCart[index].productId)
+
         } else {
-
+            return res.send({ status: "error", error: `No hay suficiente stock disponible de ${product.payload[0].title} para realizar la compra` })
         }
-
     }
-    if (amount > 0) { await TicketsManager.createTicket(amount, ) }
+    if (amount > 0) {
+
+        res.send(await TicketsManager.createTicket(amount, req.user.email))
+    } else {
+        res.send({ status: "error", error: "No hay productos en el carrito" })
+    }
+
 }
 
 
