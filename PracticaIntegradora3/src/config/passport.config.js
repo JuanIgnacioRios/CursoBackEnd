@@ -29,7 +29,7 @@ const initializePassport = () => {
             let cartId = await CartsManager.addCart()
             cartId = cartId.payload._id
 
-            let newUser = new UserDTO({first_name, last_name, email, age, password, role, cartId})
+            let newUser = new UserDTO({ first_name, last_name, email, age, password, role, cartId })
             let result = await userService.create(newUser)
             return done(null, result)
         } catch (error) {
@@ -93,7 +93,7 @@ const initializePassport = () => {
     })
 
     passport.deserializeUser(async(id, done) => {
-        let user = await userService.find({id_: id})
+        let user = await userService.find({ id_: id })
         done(null, user)
     })
 }

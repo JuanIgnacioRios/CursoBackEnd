@@ -5,7 +5,7 @@ const ProductsManager = new ProductManager();
 const CartsManager = new CartManager();
 
 async function renderProducts(req, res) {
-    if(!req.session.user){
+    if (!req.session.user) {
         return res.redirect('/login')
     }
     let { limit, page, sort, query } = req.query;
@@ -42,9 +42,14 @@ async function renderCart(req, res) {
     res.render("cart", { Products: Productos })
 }
 
+async function renderChat(req, res) {
+    res.render("chat")
+}
+
 export default {
     renderProducts,
     renderLogin,
     renderRegister,
-    renderCart
+    renderCart,
+    renderChat
 }

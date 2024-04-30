@@ -1,12 +1,13 @@
 import express from 'express';
 import cartController from '../controllers/carts.controller.js'
-import { passportCall } from '../../utils.js';
+import passport from 'passport';
+import { passportCall, authorization } from '../../utils.js';
 
 const router = express.Router();
 
 router.get('/:cid', cartController.getCartById)
 router.post('/', cartController.createCart)
-router.post('/:cid/product/:pid', cartController.addProductToCart)
+router.post('/:cid/product/:pid', authorization('user'), cartController.addProductToCart)
 router.get('/:cid/purchase', cartController.purchase)
 router.put('/:cid', cartController.updateCartProducts)
 router.put('/:cid/products/:pid', cartController.updateProductsQuantity)

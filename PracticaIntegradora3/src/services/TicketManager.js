@@ -6,7 +6,9 @@ const ticketsModel = new TicketDAO();
 class TicketManager {
     constructor() {}
 
-    async createTicket({ amount, purchaser }) {
+    async createTicket(amount, purchaser) {
+        console.log("amaunt", amount)
+        console.log("purchaser", purchaser)
         try {
             if (amount && purchaser) {
                 let newTicket = new TicketDTO({ amount, purchaser })

@@ -1,5 +1,6 @@
 import express from 'express';
 import productsController from '../controllers/products.controller.js';
+import { authorization } from '../../utils.js';
 
 const router = express.Router();
 
@@ -7,8 +8,8 @@ const router = express.Router();
 
 router.get('/', productsController.getProducts)
 router.get('/:pid', productsController.getProductById)
-router.post('/', productsController.addProduct)
-router.put('/:pid', productsController.updateProduct)
-router.delete('/:pid', productsController.deleteProduct)
+router.post('/', authorization('admin'), productsController.addProduct)
+router.put('/:pid', authorization('admin'), productsController.updateProduct)
+router.delete('/:pid', authorization('admin'), productsController.deleteProduct)
 
 export default router
