@@ -1,4 +1,7 @@
 import winston from "winston";
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const LevelsOptions = {
     levels: {
@@ -9,27 +12,25 @@ const LevelsOptions = {
         http: 4,
         debug: 5,
     },
-    colors: {
-        fatal: "red",
-        error: "orange",
-        warning: "yellow",
-        info: "blue",
-        http: "green",
-        debug: "white",
-    }
 }
 
 
-const logger = winston.createLogger({
+const loggerDev = winston.createLogger({
     levels: LevelsOptions.levels,
     transports: [
         new winston.transports.Console({
             level: "debug",
-            format: winston.format.combine(
-                winston.format.colorize({
-                    colors: LevelsOptions.colors
-                }),
-                winston.format.simple())
+            format: winston.format.simple()
+        })
+    ]
+})
+
+const loggerProd = winston.createLogger({
+    levels: LevelsOptions.levels,
+    transports: [
+        new winston.transports.Console({
+            level: "info",
+            format: winston.format.simple()
         }),
         new winston.transports.File({
             filename: './errors.log',
@@ -40,7 +41,9 @@ const logger = winston.createLogger({
 })
 
 export const addLogger = (req, res, next) => {
-    req.logger = logger;
+    const env = process.env.ENV || "development"
+    console.log(env)
+    req.logger = env === "production" ? loggerProd : loggerDev;
     req.logger.http(`${req.method} en ${req.url} - ${new Date().toLocaleTimeString()}`)
     next()
 }

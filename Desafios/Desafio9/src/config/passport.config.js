@@ -20,7 +20,7 @@ const initializePassport = () => {
         try {
             let user = await userService.findOne({ email: username })
             if (user) {
-                console.log('Usuario ya existe')
+                req.logger.warning('Usuario ya existe')
                 return done(null, false)
             }
 
@@ -62,7 +62,6 @@ const initializePassport = () => {
     }, async(accessTocken, refreshToken, profile, done) => {
         try {
             let user = await userService.findOne({ email: profile._json.email })
-            console.log(profile)
             if (!user) {
                 let newUser = {
                     first_name: profile._json.name,

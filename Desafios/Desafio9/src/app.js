@@ -67,6 +67,7 @@ app.get('/loggerTest', (req, res) => {
     req.logger.info("info")
     req.logger.http("http")
     req.logger.debug("debug")
+    res.send({status: "success", message: "logger test done"})
 })
 
 //Mongoose Connection
