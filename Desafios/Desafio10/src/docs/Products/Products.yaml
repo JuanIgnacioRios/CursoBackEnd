@@ -1,0 +1,91 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        -Products
+      responses:
+        "200":
+          description: Los productos fueron obtenidos satisfactoriamente
+        "500":
+          description: Error interno del servidor
+    post:
+      summary: Añade un producto
+      tags:
+        -Products
+      responses:
+        "200":
+          description: El producto fue añadido satisfactoriamente
+        "500":
+          description: Error interno del servidor
+  /api/products/{ProductID}:
+    get:
+      summary: Obtiene los datos del producto
+      tags:
+        -Products
+      responses:
+        "200":
+          description: El producto fue obtenido satisfactoriamente
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Actualiza los datos del producto
+      tags:
+        -Products
+      responses:
+        "200":
+          description: El producto fue actualizado satisfactoriamente
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Elimina el producto
+      tags:
+        -Products
+      responses:
+        "200":
+          description: El producto fue eliminado satisfactoriamente
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    Product:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo
+        title:
+          type: String
+          descripcion: Titulo del producto
+        description:
+          type: String
+          descripcion: Descripcion del producto
+        code:
+          type: String
+          decripcion: Codigo del producto
+        price:
+          type: Number
+          descripcion: Precio
+        status:
+          type: Boolean
+          descripcion: Producto Activo
+        stock:
+          type: Number
+          descripcion: Cantidad de productos disponibles
+        categoty:
+          type: String
+          descripcion: Categoria del producto
+        thumbnails:
+          type: Array
+          descripcion: Lista de imagenes del producto
+      example:
+        _id: "65de3657902d8913356a16a8"
+        title: "TISSOT CARSON PREMIUM"
+        description: "El Tissot Carson, un cronómetro que se adapta a cualquier momento y lugar, será el compañero perfecto que le acompañará a todas las grandes ocasiones de su vida para que cada momento que viva sea justo a tiempo. Su estilo clásico le permite no pasar nunca de moda, a la vez que le confiere su suntuoso aspecto, resaltado por un grácil diseño de esfera y unas finas agujas alargadas que se mueven por la esfera al compás del tiempo."
+        code: "T1224101603300"
+        price: 345
+        status: true
+        stock: 70
+        category: "Classic"
+        thumbnails: [./tissotcarsonpremium, ./tissotcarsonpremium2]

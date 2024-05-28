@@ -1,0 +1,92 @@
+paths:
+  /api/cart/:
+    post:
+      summary: Añade un nuevo carrito
+      tags:
+        -Cart
+      responses:
+        "200":
+          description: El carrito fue añadido satisfactoriamente
+        "500":
+          description: Error interno del servidor
+  /api/cart/{CartID}:
+    get:
+      summary: Obtener carrito por ID
+      tags:
+        -Cart
+      responses:
+        "200":
+          description: El carrito fue obtenido satisfactoriamente
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Actualizar productos de un carrito
+      tags:
+        -Cart
+      responses:
+        "200":
+          description: Los productos del carrito fueron actualizados satisfactoriamente
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar todos los productos de un carrito
+      tags:
+        -Cart
+      responses:
+        "200":
+          description: Los productos del carrito fueron eliminados satisfactoriamente
+        "500":
+          description: Error interno del servidor
+  /api/cart/{CartID}/product/{ProductID}:
+    post:
+      summary: Añadir producto a un carrito
+      tags:
+        -Cart
+      responses:
+        "200":
+          description: Se añadio un producto a un carrito satisfactoriamente
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Actualizar la cantidad de productos de un carrito
+      tags:
+        -Cart
+      responses:
+        "200":
+          description: Se ha actualizado un producto de un carrito satisfactoriamente
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un producto de un carrito
+      tags:
+        -Cart
+      responses:
+        "200":
+          description: Se ha eliminado un producto de un carrito satisfactoriamente
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    Cart:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongo
+        products:
+          type: Array
+          description: Lista de productos
+          productId:
+            type: ObjectId
+            descripcion: Id del producto
+          Quantity:
+            type: Number
+            descricion: Cantidad de productos
+        example:
+          _id: "65dface29b61386989326532"
+          products: [
+            productId: "73dface29b6138GDA9326599",
+            quantity: 2
+          ]
+        
