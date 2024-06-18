@@ -16,7 +16,8 @@ async function getCartById(req, res) {
 async function addProductToCart(req, res) {
     const cartId = req.params.cid;
     const productId = req.params.pid;
-    let result = await CartsManager.addProductToCart(cartId, productId)
+    const user = req.user;
+    let result = await CartsManager.addProductToCart(cartId, productId, user)
     res.send(result)
 }
 

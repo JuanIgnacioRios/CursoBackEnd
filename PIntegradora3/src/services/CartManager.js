@@ -1,4 +1,5 @@
 import cartModel from '../dao/models/carts.model.js'
+import productsModel from '../dao/models/products.model.js';
 
 class CartManager {
     constructor() {}
@@ -33,8 +34,10 @@ class CartManager {
         }
     }
 
-    async addProductToCart(cartId, productId) {
+    async addProductToCart(cartId, productId, user) {
         try {
+            let productObj = await productsModel.findOne({_id: productId})
+            if(productObj.owner == user.email) return { status: "error", error: "Dueño del producto no puede agregarlo a su carrito" }
             let cart = await cartModel.find({ _id: cartId })
             let productsInCart = cart[0].products
 

@@ -18,7 +18,8 @@ async function getProductById(req, res) {
 
 async function addProduct(req, res) {
     const { title, description, code, price, status, stock, category, thumbnails } = req.body;
-    let result = await ProductsManager.addProduct({ title, description, code, price, status, stock, category, thumbnails })
+    const {email} = req.user.email
+    let result = await ProductsManager.addProduct({ title, description, code, price, status, stock, category, thumbnails,email })
     res.send(result)
 }
 
@@ -31,7 +32,8 @@ async function updateProduct(req, res) {
 
 async function deleteProduct(req, res) {
     const productID = req.params.pid;
-    let result = await ProductsManager.deleteProduct(productID)
+    const user = req.user
+    let result = await ProductsManager.deleteProduct(productID, user)
     res.send(result)
 }
 

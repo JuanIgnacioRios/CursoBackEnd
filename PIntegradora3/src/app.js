@@ -14,6 +14,7 @@ import cartsRouter from './routes/carts.router.js';
 import viewsRouter from './routes/views.router.js';
 import sessionsRouter from './routes/sessions.router.js'
 import mockingproductsRouter from './routes/mockingproducts.router.js'
+import userRouter from './routes/users.router.js'
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -59,6 +60,7 @@ app.use('/', viewsRouter)
 app.use('/api/sessions', sessionsRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/cart', cartsRouter)
+app.use('/api/users', userRouter)
 app.use('/mockingproducts', mockingproductsRouter)
 app.get('/loggerTest', (req, res) => {
     req.logger.fatal("Fatal")

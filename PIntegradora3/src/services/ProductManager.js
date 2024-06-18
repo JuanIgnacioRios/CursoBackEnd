@@ -6,7 +6,7 @@ import { addProductErrorInfo } from './errors/info.js';
 class ProductManager {
     constructor() {}
 
-    async addProduct({ title, description, code, price, status, stock, category, thumbnails }) {
+    async addProduct({ title, description, code, price, status, stock, category, thumbnails, email }) {
         try {
             if (title && description && code && price && stock && category) {
                 let thumbnailsArray = thumbnails ? [thumbnails] : [];
@@ -18,7 +18,8 @@ class ProductManager {
                     status: status || true,
                     stock,
                     category,
-                    thumbnails: thumbnailsArray
+                    thumbnails: thumbnailsArray,
+                    owner: email
                 };
                 let result = await productsModel.create(newProduct)
                 return { status: "success", payload: result }
@@ -79,10 +80,15 @@ class ProductManager {
         }
     }
 
-    async deleteProduct(id) {
+    async deleteProduct(id, user) {
         try {
-            let result = await productsModel.deleteOne({ _id: id })
-            return { status: "success", payload: result }
+            let product = await productsModel.findOne({ _id: id })
+            if(product.owner == user.email || user.role == "Admin"){
+                let result = await productsModel.deleteOne({ _id: id })
+                return { status: "success", payload: result }
+            }else{
+                return {status: "error", error: "El usuario no es dueño de ese producto, por lo que no puede eliminarlo."}
+            }
 
         } catch (error) {
             return { status: "error", error: error }
