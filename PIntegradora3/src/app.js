@@ -21,7 +21,7 @@ import { dirname } from "path";
 import { authToken } from '../utils.js';
 
 const app = express();
-export const PORT = 8081;
+export const PORT = 8080;
 
 const __filename = fileURLToPath(
     import.meta.url);
@@ -60,7 +60,7 @@ app.set('view engine', 'handlebars');
 app.use('/', viewsRouter)
 app.use('/api/sessions', sessionsRouter)
 app.use('/api/products', productsRouter)
-app.use('/api/cart',authToken, cartsRouter)
+app.use('/api/cart', authToken, cartsRouter)
 app.use('/api/users', userRouter)
 app.use('/mockingproducts', mockingproductsRouter)
 app.get('/loggerTest', (req, res) => {
