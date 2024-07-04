@@ -8,6 +8,8 @@ router.get('/products', viewsController.renderProducts)
 router.get('/login', viewsController.renderLogin)
 router.get('/register', viewsController.renderRegister)
 router.get('/cart/:id', viewsController.renderCart)
+router.get('/forgetmypassword', viewsController.renderForgetMyPassword)
+router.get('/reset-password', viewsController.renderResetPassword)
 
 
 export default router

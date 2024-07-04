@@ -1,5 +1,6 @@
 import ProductManager from '../services/ProductManager.js';
 import CartManager from '../services/CartManager.js';
+import jwt from 'jsonwebtoken'
 
 const ProductsManager = new ProductManager();
 const CartsManager = new CartManager();
@@ -19,7 +20,6 @@ async function renderProducts(req, res) {
 }
 
 async function renderLogin(req, res) {
-    req.logger.fatal("Alerta")
     res.render("login")
 }
 
@@ -43,9 +43,30 @@ async function renderCart(req, res) {
     res.render("cart", { Products: Productos })
 }
 
+async function renderForgetMyPassword(req, res) {
+    
+    res.render("forgetmypassword")
+}
+
+async function renderResetPassword(req, res) {
+    const token = req.query.token
+    console.log(token)
+    jwt.verify(token, 'JsonWebTokenSecret', (error, credentials) => {
+        if (error) return res.status(403).send({
+            error: "El link de recupero de contraseña ya expiro"
+        })
+        console.log("paso")
+        req.user = credentials;
+        console.log(req.user)
+        res.render("resetpassword",{_id: req.user.id })
+    })
+}
+
 export default {
     renderProducts,
     renderLogin,
     renderRegister,
-    renderCart
+    renderCart,
+    renderForgetMyPassword,
+    renderResetPassword
 }

@@ -45,6 +45,7 @@ class ProductManager {
             const filter = query ? JSON.parse(query) : {};
 
             const products = await productsModel.paginate(filter, options);
+            console.log(limit)
             return { status: "success", payload: products };
         } catch (error) {
             return { status: "error", error: error }
@@ -71,10 +72,15 @@ class ProductManager {
 
     }
 
-    async updateProduct(id, propertiesToUpdate) {
+    async updateProduct(id, propertiesToUpdate, user) {
         try {
-            let result = await productsModel.updateOne({ _id: id }, propertiesToUpdate)
-            return { status: "success", payload: result }
+            let product = await productsModel.findOne({ _id: id })
+            if(product.owner == user.email || user.role == "admin"){
+                let result = await productsModel.updateOne({ _id: id }, propertiesToUpdate)
+                return { status: "success", payload: result }
+            }else{
+                return {status: "error", error: "El usuario no es dueño de ese producto, por lo que no puede eliminarlo."}
+            }
         } catch (error) {
             return { status: "error", error: error }
         }
@@ -83,7 +89,7 @@ class ProductManager {
     async deleteProduct(id, user) {
         try {
             let product = await productsModel.findOne({ _id: id })
-            if(product.owner == user.email || user.role == "Admin"){
+            if(product.owner == user.email || user.role == "admin"){
                 let result = await productsModel.deleteOne({ _id: id })
                 return { status: "success", payload: result }
             }else{

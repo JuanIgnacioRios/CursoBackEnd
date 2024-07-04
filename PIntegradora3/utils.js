@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
 import { faker } from '@faker-js/faker'
+import nodemailer from 'nodemailer'
 
 export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 export const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password)
@@ -20,7 +21,7 @@ export const passportCall = (strategy) => {
 export const authorization = (role) => {
     return async(req, res, next) => {
         if (!req.user) return res.status(401).send({ error: "Unauthorized" })
-        if (req.user.role != role) return res.status(403).send({ error: "No permissions" })
+        if (req.user.role != "admin" && req.user.role != role) return res.status(403).send({ error: "No permissions" })
         next()
     }
 }
@@ -30,11 +31,11 @@ export const authToken = (req, res, next) => {
         error: "Not authenticated"
     })
     const token = authHeader.split(' ')
-    jwt.verify(token, 'JsonWebTokenSecret', (error, credentials) => {
+    jwt.verify(token[1], 'JsonWebTokenSecret', (error, credentials) => {
         if (error) return res.status(403).send({
             error: "Not authorized"
         })
-        req.user = credentials.user;
+        req.user = credentials;
         next()
     })
 }
@@ -51,3 +52,13 @@ export const generateProducts = () => {
         category: faker.commerce.productMaterial()
     }
 }
+
+
+export const transport = nodemailer.createTransport({
+    service: "gmail",
+    port: 587,
+    auth:{
+        user: "juanignaciorios2003@gmail.com",
+        pass: "blgg gkch wheu scmo"
+    }
+})

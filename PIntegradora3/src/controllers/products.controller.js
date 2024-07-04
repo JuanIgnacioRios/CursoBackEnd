@@ -3,7 +3,7 @@ import ProductManager from '../services/ProductManager.js';
 const ProductsManager = new ProductManager();
 
 async function getProducts(req, res) {
-    let { limit = 10, page = 1, sort, query } = req.query;
+    let { limit = 20, page = 1, sort, query } = req.query;
     limit = parseInt(limit);
     page = parseInt(page);
     const result = await ProductsManager.getProducts(limit, page, sort, query);
@@ -18,15 +18,16 @@ async function getProductById(req, res) {
 
 async function addProduct(req, res) {
     const { title, description, code, price, status, stock, category, thumbnails } = req.body;
-    const {email} = req.user.email
+    const email = req.user.email
     let result = await ProductsManager.addProduct({ title, description, code, price, status, stock, category, thumbnails,email })
     res.send(result)
 }
 
 async function updateProduct(req, res) {
     const productID = req.params.pid;
+    const user = req.user
     const propertiesToUpdate = req.body;
-    let result = await ProductsManager.updateProduct(productID, propertiesToUpdate)
+    let result = await ProductsManager.updateProduct(productID, propertiesToUpdate, user)
     res.send(result)
 }
 
