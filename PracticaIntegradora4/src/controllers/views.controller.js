@@ -44,22 +44,26 @@ async function renderCart(req, res) {
 }
 
 async function renderForgetMyPassword(req, res) {
-    
+
     res.render("forgetmypassword")
 }
 
 async function renderResetPassword(req, res) {
     const token = req.query.token
-    console.log(token)
     jwt.verify(token, 'JsonWebTokenSecret', (error, credentials) => {
         if (error) return res.status(403).send({
             error: "El link de recupero de contraseña ya expiro"
         })
-        console.log("paso")
         req.user = credentials;
-        console.log(req.user)
-        res.render("resetpassword",{_id: req.user.id })
+        res.render("resetpassword", { _id: req.user.id })
     })
+}
+
+async function uploadFiles(req, res) {
+    if (!req.session.user) {
+        return res.redirect('/login')
+    }
+    res.render("uploadfiles", {_id: req.session.passport.user})
 }
 
 export default {
@@ -68,5 +72,6 @@ export default {
     renderRegister,
     renderCart,
     renderForgetMyPassword,
-    renderResetPassword
+    renderResetPassword,
+    uploadFiles
 }

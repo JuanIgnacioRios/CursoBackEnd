@@ -25,7 +25,7 @@ export const PORT = 8081;
 
 const __filename = fileURLToPath(
     import.meta.url);
-const __dirname = dirname(__filename);
+export const __dirname = dirname(__filename);
 
 //Middlewares
 app.use(cors())
@@ -60,9 +60,9 @@ app.set('view engine', 'handlebars');
 app.use('/', viewsRouter)
 app.use('/api/sessions', sessionsRouter)
 app.use('/api/products', productsRouter)
-app.use('/api/cart',authToken, cartsRouter)
-app.use('/api/users', userRouter)
+app.use('/api/cart', authToken, cartsRouter)
 app.use('/mockingproducts', mockingproductsRouter)
+app.use('/api/users', userRouter)
 app.get('/loggerTest', (req, res) => {
     req.logger.fatal("Fatal")
     req.logger.error("error")

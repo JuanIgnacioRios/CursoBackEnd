@@ -5,6 +5,7 @@
 {{#if isAdmin}}
     <h3>Usuario Admin</h3>
 {{/if}}
+<a href="/uploadfiles">Ir a Subir Archivos</a>
 {{#each Products}}
 <form action="http://localhost:8080/api/cart/65d9b62a44d9c92f92ecc5f7/product/{{_id}}" method="POST">
     <h1>{{title}}</h1>
