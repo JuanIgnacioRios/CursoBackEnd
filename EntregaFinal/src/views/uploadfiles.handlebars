@@ -1,0 +1,12 @@
+<form id="upload-documents-form" action="/api/users/{{_id}}/documents" method="POST" enctype="multipart/form-data" style="display: flex; flex-flow:column">
+    <label for="identification">Identificación</label>
+    <input type="file" name="identification" />
+
+    <label for="address">Comrpobante de domicilio</label>
+    <input type="file" name="address" />
+
+    <label for="bankaccount">Comprobante de estado de cuenta</label>
+    <input type="file" name="bankaccount" />
+
+    <button type="submit">Subir documentos</button>
+</form>
