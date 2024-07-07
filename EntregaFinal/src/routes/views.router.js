@@ -10,7 +10,8 @@ router.get('/register', viewsController.renderRegister)
 router.get('/cart/:id', viewsController.renderCart)
 router.get('/forgetmypassword', viewsController.renderForgetMyPassword)
 router.get('/reset-password', viewsController.renderResetPassword)
-router.get('/uploadfiles', viewsController.uploadFiles)
+router.get('/uploadfiles', viewsController.renderUploadFiles)
+router.get('/users', viewsController.renderUsers)
 
 
 export default router

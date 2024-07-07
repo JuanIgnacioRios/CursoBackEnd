@@ -2,6 +2,7 @@ import productsModel from '../dao/models/products.model.js'
 import CustomError from './errors/CustomError.js';
 import EErrors from './errors/enums.js';
 import { addProductErrorInfo } from './errors/info.js';
+import { transport } from '../../utils.js'
 
 class ProductManager {
     constructor() {}
@@ -91,6 +92,16 @@ class ProductManager {
             let product = await productsModel.findOne({ _id: id })
             if(product.owner == user.email || user.role == "admin"){
                 let result = await productsModel.deleteOne({ _id: id })
+                if(product.owner != "admin"){
+                    await transport.sendMail({
+                        from: "juaniganciorios2003@gmail.com",
+                        to: user.email,
+                        subject: "CoderhouseEcomm | Se eliminó un producto publicado por usted",
+                        html:`
+                        <p>Hola! Como estas? <br></br> Se elimino ${product.title} creado por usted <br></br></p>
+                        `
+                    })
+                }
                 return { status: "success", payload: result }
             }else{
                 return {status: "error", error: "El usuario no es dueño de ese producto, por lo que no puede eliminarlo."}

@@ -1,10 +1,36 @@
 import usersService from "../dao/models/users.model.js"
 import { createHash } from "../../utils.js"
+import UsersManager from "../services/UsersManager.js"
 
-async function getUsers() {
+const usersManager = new UsersManager();
 
+async function getUsers(req, res) {
+    try {
+        const result = await usersManager.getUsers();
+        res.send(result);
+    } catch (error) {
+        return res.send({status: "error", error: error})
+    }
 }
 
+async function deleteUnactiveUsers(req,res){
+    try{
+        const result = await usersManager.deleteUnactiveUsers();
+        res.send(result)
+    } catch (error) {
+        return res.send({status: "error", error: error})
+    }
+}
+
+async function deleteUserById(req, res){
+    try {
+        const userId = req.params.uid
+        const result = await usersService.deleteOne({_id: userId})
+        res.send({status: "success", payload: result})
+    } catch (error) {
+        return res.send({status: "error", error: error})
+    }
+}
 
 async function UpdateRole(req, res) {
     const userId = req.params.uid
@@ -48,25 +74,22 @@ async function changePassword(req, res) {
 
 async function uploadFiles(req, res) {
     const userId = req.params.uid;
-    const files = req.body;
     const bfi = req.files;
+    console.log("hola")
     try {
         const user = await usersService.findOne({ _id: userId });
-
         user.documents = user.documents || [];
-        Object.keys(files).forEach((fileKey) => {
-            if (files[fileKey]) {
-                const existingDocument = user.documents.find(doc => doc.name === fileKey);
-                if (existingDocument) {
-                    existingDocument.reference = `uploads/${files[fileKey]}`;
-                } else {
-                    user.documents.push({
-                        name: fileKey,
-                        reference: `uploads/${userId}-${files[fileKey]}`,
-                    });
-                }
+        bfi.forEach((file) =>{
+            const existingDocument = user.documents.find(doc => doc.name === file.fieldname);
+            if (existingDocument) {
+                existingDocument.reference = `uploads/${userId}-${file.originalname}`;
+            }else {
+                user.documents.push({
+                    name: file.fieldname,
+                    reference: `uploads/${userId}-${file.originalname}`,
+                });
             }
-        });
+        })
 
         const result = await usersService.updateOne({ _id: userId }, user);
         res.send({ status: "Success", payload: result });
@@ -80,5 +103,7 @@ export default {
     UpdateRole,
     changePassword,
     uploadFiles,
-    getUsers
+    getUsers,
+    deleteUnactiveUsers,
+    deleteUserById
 }

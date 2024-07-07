@@ -51,7 +51,13 @@ app.use(session({
 }))
 
 // Configuración HandleBars
-app.engine("handlebars", handlebars.engine());
+app.engine("handlebars", handlebars.engine({
+    defaultLayout: 'main',
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+    }
+}));
 app.set("views", __dirname + '/views');
 app.set('view engine', 'handlebars');
 

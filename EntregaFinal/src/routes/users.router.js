@@ -7,7 +7,9 @@ const router = express.Router();
 
 //Endpoints
 router.get('/', usersController.getUsers)
-router.put('/premium/:uid', authToken, usersController.UpdateRole)
+router.delete('/', usersController.deleteUnactiveUsers)
+router.delete('/:uid', usersController.deleteUserById)
+router.put('/premium/:uid', usersController.UpdateRole)
 router.post('/changepassword/:uid', usersController.changePassword)
 router.post('/:uid/documents', handleFiles, usersController.uploadFiles)
 

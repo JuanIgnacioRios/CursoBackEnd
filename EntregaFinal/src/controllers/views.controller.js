@@ -1,9 +1,11 @@
 import ProductManager from '../services/ProductManager.js';
 import CartManager from '../services/CartManager.js';
+import UserManager from '../services/UsersManager.js';
 import jwt from 'jsonwebtoken'
 
 const ProductsManager = new ProductManager();
 const CartsManager = new CartManager();
+const UsersManager = new UserManager();
 
 async function renderProducts(req, res) {
     if (!req.session.user) {
@@ -16,6 +18,7 @@ async function renderProducts(req, res) {
     let Productos = result.payload.docs
 
     const { first_name, last_name, email, age, isAdmin } = req.session.user
+    console.log(Productos)
     res.render("products", { Products: Productos, first_name, last_name, email, age, isAdmin })
 }
 
@@ -59,11 +62,17 @@ async function renderResetPassword(req, res) {
     })
 }
 
-async function uploadFiles(req, res) {
+async function renderUploadFiles(req, res) {
     if (!req.session.user) {
         return res.redirect('/login')
     }
     res.render("uploadfiles", {_id: req.session.passport.user})
+}
+
+async function renderUsers(req, res){
+    let Users = await UsersManager.getUsers();
+    console.log(Users.payload)
+    res.render("users", {Users: Users.payload})
 }
 
 export default {
@@ -73,5 +82,6 @@ export default {
     renderCart,
     renderForgetMyPassword,
     renderResetPassword,
-    uploadFiles
+    renderUploadFiles,
+    renderUsers
 }
