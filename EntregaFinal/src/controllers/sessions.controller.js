@@ -10,7 +10,8 @@ async function login(req, res) {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
         age: req.user.age,
-        email: req.user.email
+        email: req.user.email,
+        cart: req.user.cart
     }
     const email = req.user.email;
     const password = req.user.password;

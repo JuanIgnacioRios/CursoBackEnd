@@ -17,9 +17,8 @@ async function renderProducts(req, res) {
     let result = await ProductsManager.getProducts(limit, parseInt(page), sort, query)
     let Productos = result.payload.docs
 
-    const { first_name, last_name, email, age, isAdmin } = req.session.user
-    console.log(Productos)
-    res.render("products", { Products: Productos, first_name, last_name, email, age, isAdmin })
+    const { first_name, last_name, email, age, isAdmin, cart } = req.session.user
+    res.render("products", { Products: Productos, first_name, last_name, email, age, isAdmin, cart })
 }
 
 async function renderLogin(req, res) {
@@ -37,8 +36,9 @@ async function renderCart(req, res) {
     let Productos = [];
     for (const product of result.payload[0].products) {
         let productName = await ProductsManager.getProductById(product.productId.toString());
+        console.log(productName)
         Productos.push({
-            productId: productName.payload.title,
+            productId: productName.payload[0].title,
             quantity: product.quantity
         });
     }
@@ -83,5 +83,5 @@ export default {
     renderForgetMyPassword,
     renderResetPassword,
     renderUploadFiles,
-    renderUsers
+    renderUsers,
 }

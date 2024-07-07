@@ -66,7 +66,7 @@ app.set('view engine', 'handlebars');
 app.use('/', viewsRouter)
 app.use('/api/sessions', sessionsRouter)
 app.use('/api/products', productsRouter)
-app.use('/api/cart', authToken, cartsRouter)
+app.use('/api/cart', cartsRouter)
 app.use('/mockingproducts', mockingproductsRouter)
 app.use('/api/users', userRouter)
 app.get('/loggerTest', (req, res) => {
