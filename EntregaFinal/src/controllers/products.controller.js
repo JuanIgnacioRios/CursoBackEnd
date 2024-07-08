@@ -3,7 +3,7 @@ import ProductManager from '../services/ProductManager.js';
 const ProductsManager = new ProductManager();
 
 async function getProducts(req, res) {
-    let { limit = 20, page = 1, sort, query } = req.query;
+    let { limit = 10, page = 1, sort, query } = req.query;
     limit = parseInt(limit);
     page = parseInt(page);
     const result = await ProductsManager.getProducts(limit, page, sort, query);

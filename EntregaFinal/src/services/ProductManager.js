@@ -46,7 +46,6 @@ class ProductManager {
             const filter = query ? JSON.parse(query) : {};
 
             const products = await productsModel.paginate(filter, options);
-            console.log(limit)
             return { status: "success", payload: products };
         } catch (error) {
             return { status: "error", error: error }

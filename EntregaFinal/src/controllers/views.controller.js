@@ -36,9 +36,9 @@ async function renderCart(req, res) {
     let Productos = [];
     for (const product of result.payload[0].products) {
         let productName = await ProductsManager.getProductById(product.productId.toString());
-        console.log(productName)
         Productos.push({
-            productId: productName.payload[0].title,
+            productId: product.productId.toString(),
+            productTitle: productName.payload[0].title,
             quantity: product.quantity
         });
     }
@@ -71,8 +71,11 @@ async function renderUploadFiles(req, res) {
 
 async function renderUsers(req, res){
     let Users = await UsersManager.getUsers();
-    console.log(Users.payload)
     res.render("users", {Users: Users.payload})
+}
+
+async function renderPayment(req, res){
+    res.render("payment")
 }
 
 export default {
@@ -84,4 +87,5 @@ export default {
     renderResetPassword,
     renderUploadFiles,
     renderUsers,
+    renderPayment
 }

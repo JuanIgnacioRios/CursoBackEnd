@@ -49,12 +49,10 @@ async function logout(req, res) {
 }
 
 async function sendResetPasswordEmail(req, res) {
-    console.log(req.body)
     const email  = req.body.forgetpasswordemail
     try {
         let result = await userService.findOne({email})
         if(result){
-            console.log(result)
             let token = jwt.sign({id: result._id, email:result.email, name: result.first_name}, 'JsonWebTokenSecret', { expiresIn: '1h' });
             let emailresponse = await transport.sendMail({
                 from: "juaniganciorios2003@gmail.com",

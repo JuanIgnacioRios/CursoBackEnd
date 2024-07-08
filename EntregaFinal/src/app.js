@@ -7,6 +7,7 @@ import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import cors from 'cors'
 import { addLogger } from './utils/logger.js';
+import dotenv from 'dotenv'
 
 import initializePassport from './config/passport.config.js';
 import productsRouter from './routes/products.router.js';
@@ -15,13 +16,16 @@ import viewsRouter from './routes/views.router.js';
 import sessionsRouter from './routes/sessions.router.js'
 import mockingproductsRouter from './routes/mockingproducts.router.js'
 import userRouter from './routes/users.router.js'
+import paymentRouter from './routes/payments.router.js'
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { authToken } from '../utils.js';
 
+dotenv.config()
+
 const app = express();
-export const PORT = 8081;
+export const PORT = process.env.PORT || 8081;
 
 const __filename = fileURLToPath(
     import.meta.url);
@@ -38,7 +42,7 @@ initializePassport()
 app.use(passport.initialize())
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://JuanRios:1234562024@cluster0.qk3spmw.mongodb.net/sessiones?retryWrites=true&w=majority",
+        mongoUrl: process.env.MONGO_URL_SESSIONS,
         mongoOptions: {
             useNewUrlParser: true,
             useUnifiedTopology: true
@@ -69,6 +73,7 @@ app.use('/api/products', productsRouter)
 app.use('/api/cart', cartsRouter)
 app.use('/mockingproducts', mockingproductsRouter)
 app.use('/api/users', userRouter)
+app.use('/api/payments', paymentRouter)
 app.get('/loggerTest', (req, res) => {
     req.logger.fatal("Fatal")
     req.logger.error("error")
@@ -79,7 +84,7 @@ app.get('/loggerTest', (req, res) => {
 })
 
 //Mongoose Connection
-mongoose.connect("mongodb+srv://JuanRios:1234562024@cluster0.qk3spmw.mongodb.net/ecommerce?retryWrites=true&w=majority")
+mongoose.connect(process.env.MONGO_URL)
     .then(() => {
         console.log("Conectado a la Base de Datos")
     })

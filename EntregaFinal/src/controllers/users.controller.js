@@ -75,7 +75,6 @@ async function changePassword(req, res) {
 async function uploadFiles(req, res) {
     const userId = req.params.uid;
     const bfi = req.files;
-    console.log("hola")
     try {
         const user = await usersService.findOne({ _id: userId });
         user.documents = user.documents || [];

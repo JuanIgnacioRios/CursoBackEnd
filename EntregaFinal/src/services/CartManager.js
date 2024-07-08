@@ -40,9 +40,7 @@ class CartManager {
             if(productObj.owner == user.email) return { status: "error", error: "Dueño del producto no puede agregarlo a su carrito" }
             let cart = await cartModel.find({ _id: cartId })
             let productsInCart = cart[0].products
-
             let product = productsInCart.find(p => p.productId.toString() === productId)
-
             
             if (product) {
                 product.quantity += 1;
@@ -53,7 +51,6 @@ class CartManager {
                 }
                 productsInCart.push(product);
             }
-            console.log(productsInCart)
             let result = await cartModel.updateOne({ _id: cartId }, { products: productsInCart });
 
             return { status: "success", payload: result };
@@ -115,7 +112,6 @@ class CartManager {
 
             return { status: "success", payload: result };
         } catch (error) {
-            console.log("Error:", error);
             return { status: "error", error: error };
         }
     }

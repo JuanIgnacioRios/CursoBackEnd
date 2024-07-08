@@ -12,6 +12,7 @@ router.get('/forgetmypassword', viewsController.renderForgetMyPassword)
 router.get('/reset-password', viewsController.renderResetPassword)
 router.get('/uploadfiles', viewsController.renderUploadFiles)
 router.get('/users', viewsController.renderUsers)
+router.get('/payment', viewsController.renderPayment)
 
 
 export default router

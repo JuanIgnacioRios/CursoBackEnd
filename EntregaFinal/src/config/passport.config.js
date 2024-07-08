@@ -63,7 +63,6 @@ const initializePassport = () => {
     }, async(accessTocken, refreshToken, profile, done) => {
         try {
             let user = await userService.findOne({ email: profile._json.email })
-            console.log(profile)
             if (!user) {
                 let newUser = {
                     first_name: profile._json.name,

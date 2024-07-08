@@ -8,7 +8,6 @@ class UsersManager{
     async getUsers(){
         try {
             const users = await usersModel.find({});
-            console.log(users)
             return { status: "success", payload: users };
         } catch (error) {
             return { status: "error", error: error }
@@ -21,7 +20,6 @@ class UsersManager{
             const users = await usersModel.find({});
             let deletedUsers = []
             for (const user of users) {
-                console.log(user)
                 const lastConnection = new Date(user.last_connection);
                 const datesDifference = Math.floor((today - lastConnection) / (1000 * 60));
     
